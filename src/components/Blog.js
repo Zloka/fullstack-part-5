@@ -34,7 +34,7 @@ const Blog = ({ blog, updateBlog, removeBlog, authenticatedUsername }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author} <button onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
+        <span>{blog.title}</span> <span>{blog.author}</span> <button onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
       </div>
       {hidden
         ? null
