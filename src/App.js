@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import { userStateStorageKey } from './config'
 import blogService from './services/blogs'
@@ -9,6 +10,7 @@ import loginService from './services/login'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -36,9 +38,16 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     } catch (error) {
-      console.log("Login failed")
+      handleSetMessage('Failed to login!')
       console.log(error)
     }
+  }
+
+  const handleSetMessage = (newMessage) => {
+    setMessage(newMessage)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5 * 1000)
   }
 
   const handleLogout = (event) => {
@@ -51,14 +60,16 @@ const App = () => {
     try {
       const result = await blogService.create({ title, author, url })
       setBlogs(blogs.concat({ ...result, user }))
+      handleSetMessage('Successfully created blog!')
     } catch (error) {
-      console.log("error creating blog")
+      handleSetMessage('Failed to create blog!')
       console.log(error)
     }
   }
 
   return (
     <div>
+      <Notification message={message} />
       {user === null ? (
         <LoginForm onLogin={handleLogin} />
       )
