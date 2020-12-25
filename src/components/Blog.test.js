@@ -40,4 +40,12 @@ describe('<Blog />', () => {
     expect(screen.getByText(blog.url)).toBeInTheDocument()
     expect(screen.getByText(String(blog.likes))).toBeInTheDocument()
   })
+
+  test('should call the handler each time the like button is clicked', () => {
+    fireEvent.click(screen.getByRole('button', { name: /view/i }))
+    const likeButton = screen.getByRole('button', { name: /like/i })
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+    expect(updateBlog).toHaveBeenCalledTimes(2)
+  })
 })
