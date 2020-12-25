@@ -14,7 +14,7 @@ const HiddenBlogContent = ({ url, likes, onLike, name }) => {
   )
 }
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [hidden, setHidden] = useState(true)
   const blogStyle = {
     paddingTop: 10,
@@ -23,14 +23,13 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  console.log(blog)
 
   return (
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author} <button onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
       </div>
-      {hidden ? null : <HiddenBlogContent url={blog.url} likes={blog.likes} onLike={() => undefined} name={blog.user.name} />}
+      {hidden ? null : <HiddenBlogContent url={blog.url} likes={blog.likes} onLike={updateBlog} name={blog.user.name} />}
   </div>
 )}
 

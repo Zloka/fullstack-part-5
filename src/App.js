@@ -68,6 +68,16 @@ const App = () => {
     }
   }
 
+  const handleUpdateBlog = async (blog) => {
+    const { id, likes } = blog
+    try {
+      setBlogs(blogs.map(existingBlog => existingBlog.id !== id ? existingBlog : { ...existingBlog, likes: likes + 1 }))
+    } catch (error) {
+      console.log(error)
+      handleSetMessage('Failed to update blog!')
+    }
+  }
+
   return (
     <div>
       <Notification message={message} />
@@ -83,7 +93,7 @@ const App = () => {
             <BlogForm onCreate={handleCreateBlog} />
           </Togglable>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateBlog={() => handleUpdateBlog(blog)} />
           )}
         </>
       )
