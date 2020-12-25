@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import { userStateStorageKey } from './config'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const storageKey = 'loggedInUser'
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -18,26 +16,22 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem(storageKey)
+    const loggedUserJSON = window.localStorage.getItem(userStateStorageKey)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
         username, password,
       })
       window.localStorage.setItem(
-        storageKey, JSON.stringify(user)
+        userStateStorageKey, JSON.stringify(user)
       )
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (error) {
       console.log("Login failed")
       console.log(error)
@@ -46,34 +40,14 @@ const App = () => {
 
   const handleLogout = (event) => {
     event.preventDefault()
-    window.localStorage.removeItem(storageKey)
+    window.localStorage.removeItem(userStateStorageKey)
     setUser(null)
   }
 
   return (
     <div>
       {user === null ? (
-        <form onSubmit={handleLogin}>
-        <div>
-          username
-            <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-            <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
+        <LoginForm onLogin={handleLogin} />
       )
       : (
         <>
