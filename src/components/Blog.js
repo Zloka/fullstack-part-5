@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
 
-const HiddenBlogContent = ({ url, likes, onLike, name }) => {
+const HiddenBlogContent = ({ url, likes, onLike, name, onRemove, shouldShowRemove }) => {
   const handleLikeClick = (event) => {
     event.preventDefault()
     onLike()
   }
+
+  const handleRemoveClick = (event) => {
+    event.preventDefault()
+    onRemove()
+  }
+
   return (
     <>
       <div>{url}</div>
       <div>{likes} <button onClick={handleLikeClick}>like</button></div>
       <div>{name}</div>
+      {shouldShowRemove ? <button onClick={handleRemoveClick}>remove</button> : null}
     </>
   )
 }
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, authenticatedUsername }) => {
   const [hidden, setHidden] = useState(true)
   const blogStyle = {
     paddingTop: 10,
@@ -29,7 +36,16 @@ const Blog = ({ blog, updateBlog }) => {
       <div>
         {blog.title} {blog.author} <button onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
       </div>
-      {hidden ? null : <HiddenBlogContent url={blog.url} likes={blog.likes} onLike={updateBlog} name={blog.user.name} />}
+      {hidden
+        ? null
+        : <HiddenBlogContent
+            url={blog.url}
+            likes={blog.likes}
+            onLike={updateBlog}
+            name={blog.user.name}
+            onRemove={removeBlog}
+            shouldShowRemove={authenticatedUsername === blog.user.username}
+          />}
   </div>
 )}
 

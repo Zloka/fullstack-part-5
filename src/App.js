@@ -78,6 +78,19 @@ const App = () => {
     }
   }
 
+  const handleRemoveBlog = async (blog) => {
+    const { id } = blog
+    try {
+      if (window.confirm('are you sure you want to remove the blog?')) {
+        await blogService.remove(id)
+        setBlogs(blogs.filter(existingBlog => existingBlog.id !== id))
+      }
+    } catch (error) {
+      console.log(error)
+      handleSetMessage('Failed to remove blog!')
+    }
+  }
+
   return (
     <div>
       <Notification message={message} />
@@ -93,7 +106,12 @@ const App = () => {
             <BlogForm onCreate={handleCreateBlog} />
           </Togglable>
           {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={() => handleUpdateBlog(blog)} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateBlog={() => handleUpdateBlog(blog)}
+              removeBlog={() => handleRemoveBlog(blog)}
+              authenticatedUsername={user.username} />
           )}
         </>
       )
