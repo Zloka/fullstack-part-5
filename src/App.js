@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import { userStateStorageKey } from './config'
 import blogService from './services/blogs'
@@ -20,6 +21,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -32,6 +34,7 @@ const App = () => {
         userStateStorageKey, JSON.stringify(user)
       )
       setUser(user)
+      blogService.setToken(user.token)
     } catch (error) {
       console.log("Login failed")
       console.log(error)
@@ -44,6 +47,16 @@ const App = () => {
     setUser(null)
   }
 
+  const handleCreateBlog = async (title, author, url) => {
+    try {
+      const result = await blogService.create({ title, author, url })
+      setBlogs(blogs.concat({ ...result, user }))
+    } catch (error) {
+      console.log("error creating blog")
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       {user === null ? (
@@ -54,6 +67,7 @@ const App = () => {
           <h2>blogs</h2>
           <div>{user.name} is logged in. <button onClick={handleLogout}>log out</button></div>
           <br />
+          <BlogForm onCreate={handleCreateBlog} />
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
