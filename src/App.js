@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm'
 import { userStateStorageKey } from './config'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -78,7 +79,9 @@ const App = () => {
           <h2>blogs</h2>
           <div>{user.name} is logged in. <button onClick={handleLogout}>log out</button></div>
           <br />
-          <BlogForm onCreate={handleCreateBlog} />
+          <Togglable buttonLabel="new blog" >
+            <BlogForm onCreate={handleCreateBlog} />
+          </Togglable>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
