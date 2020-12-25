@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const storageKey = 'loggedInUser'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -15,6 +17,14 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem(storageKey)
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -22,6 +32,9 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      window.localStorage.setItem(
+        storageKey, JSON.stringify(user)
+      )
       setUser(user)
       setUsername('')
       setPassword('')
@@ -31,9 +44,16 @@ const App = () => {
     }
   }
 
+  const handleLogout = (event) => {
+    event.preventDefault()
+    window.localStorage.removeItem(storageKey)
+    setUser(null)
+  }
+
   return (
     <div>
-      {user === null ? (<form onSubmit={handleLogin}>
+      {user === null ? (
+        <form onSubmit={handleLogin}>
         <div>
           username
             <input
@@ -53,10 +73,13 @@ const App = () => {
           />
         </div>
         <button type="submit">login</button>
-      </form> ) 
+      </form>
+      )
       : (
         <>
           <h2>blogs</h2>
+          <div>{user.name} is logged in. <button onClick={handleLogout}>log out</button></div>
+          <br />
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
