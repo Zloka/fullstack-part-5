@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import Blog from './Blog'
 
@@ -33,5 +33,11 @@ describe('<Blog />', () => {
     expect(screen.getByText(blog.author)).toBeInTheDocument()
     expect(screen.queryByText(blog.url)).not.toBeInTheDocument()
     expect(screen.queryByText(String(blog.likes))).not.toBeInTheDocument()
+  })
+
+  test('should display url and likes when view button has been clicked', () => {
+    fireEvent.click(screen.getByRole('button', { name: /view/i }))
+    expect(screen.getByText(blog.url)).toBeInTheDocument()
+    expect(screen.getByText(String(blog.likes))).toBeInTheDocument()
   })
 })
