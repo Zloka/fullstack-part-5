@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-const TextInput = ({ name, value, onValueChange }) => {
+const TextInput = ({ name, value, onValueChange, inputId }) => {
   return (
     <div>
       {name}
-      <input type="text" value={value} name={name} onChange={({ target }) => onValueChange(target.value)} />
+      <input id={inputId} type="text" value={value} name={name} onChange={({ target }) => onValueChange(target.value)} />
     </div>
   )
 }
@@ -23,10 +23,10 @@ const BlogForm = ({ onCreate }) => {
     <>
     <h2>create new</h2>
     <form onSubmit={handleCreate}>
-      <TextInput name="Title" value={title} onValueChange={setTitle} />
-      <TextInput name="Author" value={author} onValueChange={setAuthor} />
-      <TextInput name="URL" value={url} onValueChange={setUrl} />
-      <button type="submit">create</button>
+      <TextInput inputId="title-input" name="Title" value={title} onValueChange={setTitle} />
+      <TextInput inputId="author-input" name="Author" value={author} onValueChange={setAuthor} />
+      <TextInput inputId="url-input" name="URL" value={url} onValueChange={setUrl} />
+      <button id="create-blog-submit" type="submit">create</button>
     </form>
     </>
   )
