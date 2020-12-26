@@ -33,4 +33,27 @@ describe('Blog app', function() {
       cy.contains('Failed to login!')
     })
   })
+
+  describe.only('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type(username)
+      cy.get('#password').type(password)
+      cy.get('#login-button').click()
+      cy.contains(`${name} is logged in.`)
+    })
+
+    it('should be able to create a new blog', function() {
+      const title = 'newblogtitle'
+      const author = 'newblogauthor'
+      const url = 'newblogurl'
+      cy.get('#toggle-visible').click()
+      cy.get('#title-input').type(title)
+      cy.get('#author-input').type(author)
+      cy.get('#url-input').type(url)
+      cy.get('#create-blog-submit').click()
+      cy.contains('Successfully created blog!')
+      cy.contains(title)
+      cy.contains(author)
+    })
+  })
 })
