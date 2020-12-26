@@ -55,5 +55,26 @@ describe('Blog app', function() {
       cy.contains(title)
       cy.contains(author)
     })
+
+    it('should be able to like a blog', function() {
+      // Create blog to like
+      const title = 'newblogtitle'
+      const author = 'newblogauthor'
+      const url = 'newblogurl'
+      cy.get('#toggle-visible').click()
+      cy.get('#title-input').type(title)
+      cy.get('#author-input').type(author)
+      cy.get('#url-input').type(url)
+      cy.get('#create-blog-submit').click()
+      cy.contains('Successfully created blog!')
+      cy.contains(title)
+      cy.contains(author)
+
+      // View the blog
+      cy.get('#toggle-view-button').click()
+      cy.contains('0')
+      cy.get('#like-button').click()
+      cy.contains('1')
+    })
   })
 })

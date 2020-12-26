@@ -14,7 +14,7 @@ const HiddenBlogContent = ({ url, likes, onLike, name, onRemove, shouldShowRemov
   return (
     <>
       <div>{url}</div>
-      <div>{likes} <button onClick={handleLikeClick}>like</button></div>
+      <div>{likes} <button id="like-button" onClick={handleLikeClick}>like</button></div>
       <div>{name}</div>
       {shouldShowRemove ? <button onClick={handleRemoveClick}>remove</button> : null}
     </>
@@ -34,7 +34,7 @@ const Blog = ({ blog, updateBlog, removeBlog, authenticatedUsername }) => {
   return (
     <div style={blogStyle}>
       <div>
-        <span>{blog.title}</span> <span>{blog.author}</span> <button onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
+        <span>{blog.title}</span> <span>{blog.author}</span> <button id="toggle-view-button" onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
       </div>
       {hidden
         ? null
