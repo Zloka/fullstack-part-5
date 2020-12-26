@@ -32,7 +32,7 @@ const Blog = ({ blog, updateBlog, removeBlog, authenticatedUsername }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div id="blog" style={blogStyle}>
       <div>
         <span>{blog.title}</span> <span>{blog.author}</span> <button id="toggle-view-button" onClick={() => setHidden(!hidden)}>{hidden ? 'view' : 'hide'}</button>
       </div>
