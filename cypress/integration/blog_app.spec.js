@@ -76,5 +76,24 @@ describe('Blog app', function() {
       cy.get('#like-button').click()
       cy.contains('1')
     })
+
+    it('should be able to remove a created blog', function() {
+      // Create blog to remove
+      const title = 'newblogtitle'
+      const author = 'newblogauthor'
+      const url = 'newblogurl'
+      cy.get('#toggle-visible').click()
+      cy.get('#title-input').type(title)
+      cy.get('#author-input').type(author)
+      cy.get('#url-input').type(url)
+      cy.get('#create-blog-submit').click()
+      cy.contains('Successfully created blog!')
+      cy.contains(title)
+      cy.contains(author)
+
+      // Remove the blog
+      cy.get('#toggle-view-button').click()
+      cy.get('#remove-button').click()
+    })
   })
 })

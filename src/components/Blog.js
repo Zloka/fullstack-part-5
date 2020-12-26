@@ -16,7 +16,7 @@ const HiddenBlogContent = ({ url, likes, onLike, name, onRemove, shouldShowRemov
       <div>{url}</div>
       <div>{likes} <button id="like-button" onClick={handleLikeClick}>like</button></div>
       <div>{name}</div>
-      {shouldShowRemove ? <button onClick={handleRemoveClick}>remove</button> : null}
+      {shouldShowRemove ? <button id="remove-button" onClick={handleRemoveClick}>remove</button> : null}
     </>
   )
 }
